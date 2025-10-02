@@ -1,0 +1,133 @@
+<% layout("/layouts/boilerplate") %>
+
+<style>
+    body {
+        background-color: #f0f2f5;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .payment-wrapper {
+        max-width: 900px;
+        margin: 50px auto;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        overflow: hidden;
+    }
+    .summary-section {
+        background: #f8f9fa;
+        padding: 30px;
+        border-right: 1px solid #ddd;
+    }
+    .summary-section h4 {
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+    .amount {
+        font-size: 1.8rem;
+        color: #28a745;
+        font-weight: bold;
+    }
+    .form-section {
+        padding: 30px;
+    }
+    .form-label {
+        font-weight: 500;
+    }
+    .input-group-text {
+        background-color: #f1f1f1;
+        border-right: 0;
+    }
+    .form-control {
+        border-left: 0;
+    }
+    .btn-pay {
+        background-color: #28a745;
+        color: white;
+        font-size: 1.1rem;
+        font-weight: bold;
+        padding: 12px;
+        border-radius: 8px;
+        transition: 0.3s;
+    }
+    .btn-pay:hover {
+        background-color: #218838;
+    }
+    .date-section {
+        margin-bottom: 20px;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        background: #ffffff;
+    }
+    .date-section h5 {
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+</style>
+</head>
+<body>
+
+<div class="payment-wrapper row g-0">
+    <!-- Left: Order Summary -->
+    <div class="col-md-4 summary-section">
+        <h4>Order Summary</h4>
+        <p><strong>Product:</strong> Deluxe Room</p>
+        
+        <!-- NEW DATE PICKER SECTION -->
+        <div class="date-section">
+            <h5>Select Dates</h5>
+            <div class="mb-3">
+                <label class="form-label">Check-in Date</label>
+                <input type="date" class="form-control" name="checkIn" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Check-out Date</label>
+                <input type="date" class="form-control" name="checkOut" required>
+            </div>
+        </div>
+
+        <hr>
+        <p>Total Amount</p>
+        <p class="amount">₹ 5000</p>
+        <p class="text-muted">Inclusive of all taxes</p>
+    </div>
+
+    <!-- Right: Payment Form -->
+    <div class="col-md-8 form-section">
+        <h4 class="mb-4">Enter Payment Details</h4>
+        <form action="/process-payment" method="POST">
+            
+            <div class="mb-3">
+                <label class="form-label">Cardholder Name</label>
+                <input type="text" class="form-control" name="cardName" placeholder="Vishnu Kant" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Card Number</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fa-solid fa-credit-card"></i></span>
+                    <input type="text" class="form-control" name="cardNumber" maxlength="16" placeholder="1234 5678 9012 3456" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Expiry Date</label>
+                    <input type="month" class="form-control" name="expiryDate" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">CVV</label>
+                    <input type="password" class="form-control" name="cvv" maxlength="4" placeholder="123" required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-pay w-100 mt-2">
+                <i class="fa-solid fa-lock"></i> Pay ₹ 5000 Securely
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
