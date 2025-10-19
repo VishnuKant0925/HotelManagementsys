@@ -49,7 +49,20 @@ const listingSchema = new Schema({
   },
 });
 
-listingSchema.post("findOneAndDelete",  async (listing)=>{
+// Create text indexes for better search performance
+listingSchema.index({
+  title: "text",
+  location: "text",
+  country: "text",
+  description: "text",
+});
+
+// Create regular indexes for common queries
+listingSchema.index({ location: 1 });
+listingSchema.index({ country: 1 });
+listingSchema.index({ price: 1 });
+
+listingSchema.post("findOneAndDelete", async (listing) => {
   if (listing) {
     await Review.deleteMany({
       _id: {
@@ -57,7 +70,6 @@ listingSchema.post("findOneAndDelete",  async (listing)=>{
       },
     });
   }
-
 });
 
 const Listing = mongoose.model("Listing", listingSchema);

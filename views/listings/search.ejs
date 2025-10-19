@@ -1,0 +1,254 @@
+<% layout("/layouts/boilerplate") %>
+
+<style>
+  .search-header {
+    background: linear-gradient(135deg, #fe424d, #ff6b6b);
+    color: white;
+    padding: 2rem 0;
+    margin-bottom: 2rem;
+    border-radius: 0 0 20px 20px;
+  }
+
+  .search-results-count {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    color: #666;
+  }
+
+  .search-query {
+    font-weight: bold;
+    color: #fe424d;
+  }
+
+  .back-to-listings {
+    margin-bottom: 1rem;
+  }
+
+  .no-results {
+    text-align: center;
+    padding: 3rem;
+    color: #666;
+  }
+
+  .no-results i {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    color: #ddd;
+  }
+
+  #filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .filter {
+    text-align: center;
+    margin-right: 2rem;
+    margin-top: 1rem;
+    opacity: 0.7;
+  }
+
+  .filter:hover {
+    opacity: 1;
+    cursor: pointer;
+  }
+
+  .filter p {
+    font-size: 0.8rem;
+  }
+
+  .tax-info {
+    display: none;
+  }
+
+  .tax-toggle {
+    border: 1px solid black;
+    border-radius: 1rem;
+    height: 3.2rem;
+    padding: 1rem;
+    margin-left: 2rem;
+    display: flex;
+    align-items: center;
+  }
+
+  .search-suggestion {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    padding: 1rem;
+    margin: 1rem 0;
+  }
+</style>
+
+<div class="search-header">
+  <div class="container">
+    <h2><i class="fa-solid fa-magnifying-glass"></i> Search Results</h2>
+    <p class="mb-0">
+      Showing results for "<span class="search-query"><%= searchQuery %></span>"
+    </p>
+  </div>
+</div>
+
+<div class="container">
+  <!-- Back to Listings Button -->
+  <div class="back-to-listings">
+    <a href="/listings" class="btn btn-outline-secondary">
+      <i class="fa-solid fa-arrow-left"></i> Back to All Listings
+    </a>
+  </div>
+
+  <!-- Search Results Count -->
+  <div class="search-results-count">
+    <strong><%= searchCount %></strong> listing(s) found for "<%= searchQuery
+    %>"
+  </div>
+
+  <!-- Filters (same as main listings page) -->
+  <div id="filters">
+    <div class="filter">
+      <div><i class="fa-solid fa-fire"></i></div>
+      <p>Trending</p>
+    </div>
+    <div class="filter">
+      <div><i class="fa-solid fa-bed"></i></div>
+      <p>Rooms</p>
+    </div>
+    <div class="filter">
+      <div><i class="fa-solid fa-mountain-city"></i></div>
+      <p>Iconic Cities</p>
+    </div>
+    <div class="filter">
+      <div><i class="fa-solid fa-mountain-sun"></i></div>
+      <p>Mountains</p>
+    </div>
+    <div class="filter">
+      <div><i class="fa-solid fa-chess-rook"></i></div>
+      <p>Castles</p>
+    </div>
+    <div class="filter">
+      <div><i class="fa-solid fa-person-swimming"></i></div>
+      <p>Amazing Pools</p>
+    </div>
+    <div class="filter">
+      <div><i class="fa-solid fa-campground"></i></div>
+      <p>Camping</p>
+    </div>
+    <div class="filter">
+      <div><i class="fa-solid fa-tractor"></i></div>
+      <p>Farms</p>
+    </div>
+    <div class="filter">
+      <div><i class="fa-solid fa-landmark-dome"></i></div>
+      <p>Domes</p>
+    </div>
+    <div class="filter">
+      <div><i class="fa-solid fa-ship"></i></div>
+      <p>Boats</p>
+    </div>
+
+    <div class="tax-toggle">
+      <div class="form-check-reverse form-switch">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          role="switch"
+          id="switchCheckDefault"
+        />
+        <label class="form-check-label" for="switchCheckDefault"
+          >Display Total After Tax</label
+        >
+      </div>
+    </div>
+  </div>
+
+  <!-- Search Results -->
+  <% if (allListings && allListings.length > 0) { %>
+  <div class="row row-cols-lg-3 row-cols-md-3 row-cols-sm-1 mt-3">
+    <% for(let listing of allListings) { %>
+    <a href="/listings/<%=listing._id %>" class="listing-link">
+      <div class="card col listing-card">
+        <img
+          src="<%= listing.image.url %>"
+          class="card-img-top"
+          alt="listing_image"
+          style="height: 20rem"
+        />
+        <div class="card-img-overlay"></div>
+        <div class="card-body">
+          <p class="card-text">
+            <b><%= listing.title %></b>
+            <br />
+            <small class="text-muted">
+              <i class="fa-solid fa-location-dot"></i> <%= listing.location %>,
+              <%= listing.country %>
+            </small>
+            <br />
+            &#8377; <%= listing.price ? listing.price.toLocaleString("en-IN") :
+            "Price not available" %> / night
+            <i class="tax-info"> &nbsp;&nbsp; +18% GST</i>
+          </p>
+        </div>
+      </div>
+    </a>
+    <% } %>
+  </div>
+  <% } else { %>
+  <div class="no-results">
+    <i class="fa-solid fa-search"></i>
+    <h3>No listings found</h3>
+    <p>Try searching with different keywords or browse all listings.</p>
+
+    <div class="search-suggestion">
+      <h5>Search Tips:</h5>
+      <ul class="text-start">
+        <li>Try searching by city name (e.g., "New York", "Paris")</li>
+        <li>Search by country (e.g., "United States", "France")</li>
+        <li>Use property types (e.g., "Villa", "Cottage", "Apartment")</li>
+        <li>Try partial matches (e.g., "Beach" for beachfront properties)</li>
+      </ul>
+    </div>
+
+    <a href="/listings" class="btn btn-primary mt-3">
+      <i class="fa-solid fa-list"></i> Browse All Listings
+    </a>
+  </div>
+  <% } %>
+</div>
+
+<script>
+  let taxSwitch = document.getElementById("switchCheckDefault");
+  taxSwitch.addEventListener("click", () => {
+    let taxInfo = document.getElementsByClassName("tax-info");
+    for (info of taxInfo) {
+      if (info.style.display != "inline") {
+        info.style.display = "inline";
+      } else {
+        info.style.display = "none";
+      }
+    }
+  });
+
+  // Add highlighting for search terms
+  document.addEventListener("DOMContentLoaded", function () {
+    const searchQuery = "<%= searchQuery %>";
+    const terms = searchQuery.split(" ");
+
+    terms.forEach((term) => {
+      if (term.length > 2) {
+        // Only highlight terms longer than 2 characters
+        const regex = new RegExp(`(${term})`, "gi");
+        const elements = document.querySelectorAll(
+          ".card-text b, .card-text small"
+        );
+
+        elements.forEach((element) => {
+          element.innerHTML = element.innerHTML.replace(
+            regex,
+            "<mark>$1</mark>"
+          );
+        });
+      }
+    });
+  });
+</script>
